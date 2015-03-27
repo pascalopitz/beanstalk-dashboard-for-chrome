@@ -1,0 +1,24 @@
+{
+  "name": "beanstalk-dashboard-for-chrome",
+  "version": "0.0.0",
+  "description": "A chrome app to inspect beanstalk queues",
+  "main": "index.js",
+  "scripts": {
+    "watch": "./node_modules/.bin/watch \"npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg\" src",
+    "minify-ui": "./node_modules/.bin/browserify -t babelify --extension=.jsx -e src/app.js > js/app.js",
+    "minify-bg": "./node_modules/.bin/browserify -t babelify -e src/background.js > js/background.js",
+    "compile": "npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg",
+    "cleanup": "rm -Rf ./js && mkdir js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^4.4.5",
+    "babelify": "^5.0.3",
+    "react": "0.13.0-rc1",
+    "nodestalker": "^0.1.17",
+    "browserify": "^9.0.3",
+    "watch": "^0.13.0"
+  }
+}

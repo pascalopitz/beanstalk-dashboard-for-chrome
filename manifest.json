@@ -1,0 +1,23 @@
+{
+  "name": "beanstalk-dashboard-for-chrome",
+  "description": "beanstalk-dashboard-for-chrome",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": [
+        "js/background.js"
+      ]
+    }
+  },
+  "permissions": [
+    "system.network"
+  ],  
+  "sockets": {
+      "tcp": {
+        "connect": ""
+      }
+    },
+  "icons": { 
+  }
+}
