@@ -1,9 +1,13 @@
 import React from 'react/addons'; 
 
+import Settings from './Settings'; 
+
 class Application extends React.Component {
 	render () {
 		return (
-			<div>Application</div>
+			<div>
+				<Settings />
+			</div>
 		);
 	}
 };

@@ -4,11 +4,15 @@
   "description": "A chrome app to inspect beanstalk queues",
   "main": "index.js",
   "scripts": {
-    "watch": "./node_modules/.bin/watch \"npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg\" src",
-    "minify-ui": "./node_modules/.bin/browserify -t babelify --extension=.jsx -e src/app.js > js/app.js",
-    "minify-bg": "./node_modules/.bin/browserify -t babelify -e src/background.js > js/background.js",
-    "compile": "npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg",
-    "cleanup": "rm -Rf ./js && mkdir js",
+    "watch": "npm run-script cleanup && npm run-script compile-js && npm run-script compile-css && npm run-script watch-js & npm run-script watch-css",
+    "watch-js": "./node_modules/.bin/watch \"npm run-script compile-js\" src/js",
+    "watch-css": "./node_modules/.bin/watch \"npm run-script compile-css\" src/styles",
+    "minify-ui": "./node_modules/.bin/browserify -t babelify --extension=.jsx -e src/js/app.js > js/app.js",
+    "minify-bg": "./node_modules/.bin/browserify -t babelify -e src/js/background.js > js/background.js",
+    "css": "./node_modules/.bin/lessc src/styles/app.less css/app.css",
+    "compile-js": "npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg",
+    "compile-css": "npm run-script css",
+    "cleanup": "rm -Rf ./css && rm -Rf ./js && mkdir js && mkdir css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -19,6 +23,9 @@
     "react": "0.13.0-rc1",
     "nodestalker": "^0.1.17",
     "browserify": "^9.0.3",
-    "watch": "^0.13.0"
+    "watch": "^0.13.0",
+    "purecss": "~0.6.0",
+    "less": "~2.4.0",
+    "font-awesome": "~4.3.0"
   }
 }
