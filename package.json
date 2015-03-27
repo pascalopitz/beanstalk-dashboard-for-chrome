@@ -10,7 +10,7 @@
     "minify-ui": "./node_modules/.bin/browserify -t babelify --extension=.jsx -e src/js/app.js > js/app.js",
     "minify-bg": "./node_modules/.bin/browserify -t babelify -e src/js/background.js > js/background.js",
     "css": "./node_modules/.bin/lessc src/styles/app.less css/app.css",
-    "compile-js": "npm run-script cleanup && npm run-script minify-ui && npm run-script minify-bg",
+    "compile-js": "npm run-script minify-ui && npm run-script minify-bg",
     "compile-css": "npm run-script css",
     "cleanup": "rm -Rf ./css && rm -Rf ./js && mkdir js && mkdir css",
     "test": "echo \"Error: no test specified\" && exit 1"

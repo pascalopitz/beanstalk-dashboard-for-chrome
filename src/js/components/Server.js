@@ -2,8 +2,15 @@ import React from 'react/addons';
 
 class Server extends React.Component {
 	render () {
+
+		console.log(this._props);
+
+		var rows = [];
+
 		return (
-			<div>Server</div>
+			<table>
+				{rows}
+			</table>
 		);
 	}
 };
