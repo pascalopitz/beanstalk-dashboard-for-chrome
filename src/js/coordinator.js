@@ -4,11 +4,14 @@ import events from './events';
 
 import Queue from './beanstalk/Queue';
 
+const INTERVAL = 1000;
+
 class Coordinator {
 
 	init () {
-		window.setInterval(this.query.bind(this), 1000);
-		events.on('empty-queue', this.emptyQueue.bind(this))
+		window.setInterval(this.query.bind(this), INTERVAL);
+		this.query();
+		events.on('empty-queue', this.emptyQueue.bind(this));
 	}
 
 	query () {
@@ -32,32 +35,38 @@ class Coordinator {
 
 	emptyQueue (queue) {
 
+		store.loading = true;
+		events.emit('rerender');
+
 		let client = new Queue(store.settings);
-		let setup = [];
 
-		setup.push(client.watch(queue));
-		if(queue !== 'default') setup.push(client.ignore('default'));
-
-		Promise.all(setup).then(() => {
+		client.watch(queue).then(() => {
+			if(queue !== 'default') {
+				return client.ignore('default');
+			}
+		}).then(() => {
 
 			let timeout;
 
-			let emptyHandler = (job) => {
-				console.log('emptyHandler', job);
-				client.deleteJob(job.id).then(emptyHandler);
+			var emptyHandler = (job) => {
+				client.deleteJob(job.id).then(reserve);
+			};
+
+			var reserve = () => {
+				client.reserve().then((job) => {
+					emptyHandler(job);
+				}, () => {
+					client.disconnect();
+				});
 
 				if(timeout) {
 					clearTimeout(timeout);
 				}
 				timeout = setTimeout(() => {
 					client.disconnect();
-				}, 1000);
-			};
-
-			let reserve = () => {
-				client.reserve().then(emptyHandler, () => {
-					client.disconnect();
-				});
+					store.loading = false;
+					events.emit('rerender');
+				}, 100);
 			};
 
 			reserve();

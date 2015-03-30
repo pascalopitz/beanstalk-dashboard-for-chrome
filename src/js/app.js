@@ -19,9 +19,16 @@ let routes = {
 }
 
 function render() {
+	let loader;
+
+	if(store.loading) {
+		loader = <div id="custom-loader"><i className="fa fa-spinner fa-spin"></i></div>
+	}
+
 	React.render(
 		<div>
-			<Navigation routes={routes} store={store} />		
+			{loader}
+			<Navigation routes={routes} store={store} />
 			<Router routes={routes} store={store} />
 		</div>,
 		document.getElementById('root')
