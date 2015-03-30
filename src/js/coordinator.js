@@ -9,9 +9,22 @@ const INTERVAL = 1000;
 class Coordinator {
 
 	init () {
-		window.setInterval(this.query.bind(this), INTERVAL);
 		this.query();
+		this.resumeQueue();
+
 		events.on('empty-queue', this.emptyQueue.bind(this));
+		events.on('update-settings-start', this.pauseQueue.bind(this));
+		events.on('update-settings-finish', this.resumeQueue.bind(this));
+	}
+
+	resumeQueue () {
+		this.queryInterval = window.setInterval(this.query.bind(this), INTERVAL);
+	}
+
+	pauseQueue () {
+		if(this.queryInterval) {
+			window.clearInterval(this.queryInterval);
+		}
 	}
 
 	query () {

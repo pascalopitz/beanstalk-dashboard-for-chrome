@@ -9,6 +9,10 @@
 	font-style: normal;
 }
 
+#root {
+	min-height: 100vh;
+}
+
 #custom-loader {
 	position: fixed;
 	color: green;
@@ -20,4 +24,33 @@
 	margin-top: -15px;
 	margin-left: -15px;
 	font-size: 30px;
+}
+
+.custom-actions {
+	position: relative;
+	min-width: 60px;
+}
+
+.custom-actions-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.custom-actions-menu {
+	background: white;
+	position: absolute;
+	z-index: 2;
+	top: 25px;
+	left: 0px;
+	min-width: 100px;
+	border: 1px solid black;
+}
+
+.custom-actions-menu li a {
+	cursor: pointer;
+}
+
+.custom-actions-menu li a span:before {
+	content: " ";
 }

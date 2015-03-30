@@ -3,7 +3,7 @@ import React from 'react/addons';
 import store from '../store';
 import events from '../events';
 
-import ActionsMenu from './ActionsMenu';
+import ActionsMenuColumn from './ActionsMenuColumn';
 
 class Server extends React.Component {
 	render () {
@@ -21,9 +21,7 @@ class Server extends React.Component {
 						<td>{st['current-waiting']}</td>
 						<td>{st['current-watching']}</td>
 
-						<td width="100px">
-							<ActionsMenu queue={st.name} />
-						</td>
+						<ActionsMenuColumn queue={st.name} />
 					</tr>;
 		});
 
