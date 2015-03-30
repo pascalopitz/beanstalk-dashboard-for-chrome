@@ -1,31 +1,67 @@
-import bs from 'nodestalker';
-import store from './store';
 
-var client = bs.Client();
+import store from './store';
+import events from './events';
+
+import Queue from './beanstalk/Queue';
 
 class Coordinator {
 
 	init () {
-		this.query();
-		window.setInterval(this.query.bind(this), 10000);
+		window.setInterval(this.query.bind(this), 1000);
+		events.on('empty-queue', this.emptyQueue.bind(this))
 	}
 
-	query() {
+	query () {
+		let client = new Queue(store.settings);
 
-		console.log('query');
+		store.stats = [];
 
-		let stats = [];
+		client.list_tubes().then((data) => {
+			var all = data.map((tube) => {
+				return client.stats_tube(tube);
+			});
 
-		client.list_tubes().onSuccess((data) => {
-			data.forEach((tube) => {
-				client.stats_tube(tube).onSuccess((s) => {
-					stats.push(s)
-					console.log('query result', s);
-					store.stats = stats;
-				});
+			Promise.all(all).then((data) => {
+				client.disconnect();
+				store.stats = data;
+				events.emit('rerender');
 			});
 		});
+	}
 
+
+	emptyQueue (queue) {
+
+		let client = new Queue(store.settings);
+		let setup = [];
+
+		setup.push(client.watch(queue));
+		if(queue !== 'default') setup.push(client.ignore('default'));
+
+		Promise.all(setup).then(() => {
+
+			let timeout;
+
+			let emptyHandler = (job) => {
+				console.log('emptyHandler', job);
+				client.deleteJob(job.id).then(emptyHandler);
+
+				if(timeout) {
+					clearTimeout(timeout);
+				}
+				timeout = setTimeout(() => {
+					client.disconnect();
+				}, 1000);
+			};
+
+			let reserve = () => {
+				client.reserve().then(emptyHandler, () => {
+					client.disconnect();
+				});
+			};
+
+			reserve();
+		});
 	}
 }
 
