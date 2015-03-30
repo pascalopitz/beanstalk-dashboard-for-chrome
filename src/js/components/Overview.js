@@ -5,7 +5,7 @@ import events from '../events';
 
 import ActionsMenuColumn from './ActionsMenuColumn';
 
-class Server extends React.Component {
+class Overview extends React.Component {
 	render () {
 
 		var rows = store.stats.map((st) => {
@@ -51,5 +51,5 @@ class Server extends React.Component {
 	}
 };
 
-export default Server;
+export default Overview;
 

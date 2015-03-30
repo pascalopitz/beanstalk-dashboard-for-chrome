@@ -39,9 +39,9 @@ class ActionsMenuColumn extends React.Component {
 							</a>
 						</li>
 						<li className="pure-menu-item">
-							<a onClick={this._addItem.bind(this)} className="pure-menu-link">
-								<i className="fa fa-plus"></i>
-								<span>Add Item</span>
+							<a href={ "#/queue/" + this.props.queue } className="pure-menu-link">
+								<i className="fa fa-search"></i>
+								<span>Details</span>
 							</a>
 						</li>
 					</ul>

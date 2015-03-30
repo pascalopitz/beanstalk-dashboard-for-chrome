@@ -10,12 +10,14 @@ import events from './events';
 
 import Navigation from './components/Navigation'; 
 import Settings from './components/Settings'; 
-import Server from './components/Server'; 
+import Overview from './components/Overview'; 
+import Details from './components/Details'; 
 
 
 let routes = {
-    '/'         : Server,
-    '/settings' : Settings
+    '/'              : Overview,
+    '/queue/:name'   : Details,
+    '/settings'      : Settings
 }
 
 function render() {
