@@ -3,6 +3,11 @@ import nodestalker from 'nodestalker';
 class Queue {
 
     constructor (connection) {
+
+        if(connection.port) {
+            connection.port = parseInt(connection.port, 10);
+        }
+
         this.client = nodestalker.Client(connection);
     }
 
