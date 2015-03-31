@@ -9,7 +9,7 @@ class Navigation extends React.Component {
 
 				<ul className="pure-menu-list">
 					<li className="pure-menu-item">
-						<a href="#/" className="pure-menu-link">Home</a>
+						<a href="#/" className="pure-menu-link">All Queues</a>
 					</li>
 					<li className="pure-menu-item">
 						<a href="#/settings" className="pure-menu-link">Settings</a>

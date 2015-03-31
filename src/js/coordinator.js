@@ -12,7 +12,9 @@ class Coordinator {
 		this.query();
 		this.resumeQueue();
 
-		events.on('empty-queue', this.emptyQueue.bind(this));
+		events.on('queue-empty', this.emptyQueue.bind(this));
+		events.on('queue-details', this.getQueueDetails.bind(this));
+
 		events.on('update-settings-start', this.pauseQueue.bind(this));
 		events.on('update-settings-finish', this.resumeQueue.bind(this));
 	}
@@ -30,7 +32,7 @@ class Coordinator {
 	query () {
 		let client = new Queue(store.settings);
 
-		store.stats = [];
+		store.stats = {};
 
 		client.list_tubes().then((data) => {
 			var all = data.map((tube) => {
@@ -39,9 +41,39 @@ class Coordinator {
 
 			Promise.all(all).then((data) => {
 				client.disconnect();
-				store.stats = data;
+
+				for(let d of data) {
+					store.stats[d.name] = d;
+				}
 				events.emit('rerender');
 			});
+		});
+	}
+
+
+	getQueueDetails (queue) {
+
+		store.loading = true;
+		store.peek = {};
+		events.emit('rerender');
+
+		let client = new Queue(store.settings);
+
+		client.watchOnly(queue).then(() => {
+			var all = [];
+
+			all.push(client.peek_ready());
+			all.push(client.peek_buried());
+			all.push(client.peek_delayed());
+
+
+			Promise.all(all).then((data) => {
+				client.disconnect();
+				console.log(data);
+				store.loading = false;
+				events.emit('rerender');
+			});
+
 		});
 	}
 
@@ -53,11 +85,7 @@ class Coordinator {
 
 		let client = new Queue(store.settings);
 
-		client.watch(queue).then(() => {
-			if(queue !== 'default') {
-				return client.ignore('default');
-			}
-		}).then(() => {
+		client.watchOnly(queue).then(() => {
 
 			let timeout;
 

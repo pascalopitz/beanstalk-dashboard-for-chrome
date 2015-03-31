@@ -1,6 +1,7 @@
 let store = {
 	loading: false,
-	stats: [],
+	stats: {},
+	peek: {},
 	settings: {
 		connection: "localhost",
 		port: 11300

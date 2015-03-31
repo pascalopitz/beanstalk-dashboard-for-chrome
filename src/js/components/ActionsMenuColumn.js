@@ -10,8 +10,9 @@ class ActionsMenuColumn extends React.Component {
 		};
 	}
 
-	_addItem () {
-		
+	_gotoQueue () {
+		this._toggleMenu();
+		window.location.hash = "/queue/" + this.props.queue;
 	}
 
 	_toggleMenu () {
@@ -21,7 +22,8 @@ class ActionsMenuColumn extends React.Component {
 	}
 
 	_emptyQueue () {
-		events.emit('empty-queue', this.props.queue);
+		events.emit('queue-empty', this.props.queue);
+		this._toggleMenu();
 	}
 
 	render () {
@@ -39,7 +41,7 @@ class ActionsMenuColumn extends React.Component {
 							</a>
 						</li>
 						<li className="pure-menu-item">
-							<a href={ "#/queue/" + this.props.queue } className="pure-menu-link">
+							<a onClick={this._gotoQueue.bind(this)} className="pure-menu-link">
 								<i className="fa fa-search"></i>
 								<span>Details</span>
 							</a>
@@ -52,7 +54,10 @@ class ActionsMenuColumn extends React.Component {
 		return (
 			<td className="custom-actions">
 				<div className="custom-actions-inner">
-					<a onClick={this._toggleMenu.bind(this)} className="pure-button">Actions</a>
+					<a onClick={this._toggleMenu.bind(this)} className="pure-button">
+						<i className="fa fa-cog"></i>
+						Actions
+					</a>
 					{menu}
 				</div>
 			</td>

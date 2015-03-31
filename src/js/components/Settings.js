@@ -56,17 +56,20 @@ class Settings extends React.Component {
 		};
 
 		return (
-			<form className="pure-form pure-form-aligned" onSubmit={this._noop}>
-				<fieldset>
-					{fields}
+			<div>
+				<h1>Settings</h1>
+				<form className="pure-form pure-form-aligned" onSubmit={this._noop}>
+					<fieldset>
+						{fields}
 
-					<div className="pure-controls">
-						<button
-							className="pure-button pure-button-primary"
-							onClick={this._save.bind(this)}>Save</button>
-					</div>
-				</fieldset>
-			</form>
+						<div className="pure-controls">
+							<button
+								className="pure-button pure-button-primary"
+								onClick={this._save.bind(this)}>Save</button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
 		);
 	}
 };

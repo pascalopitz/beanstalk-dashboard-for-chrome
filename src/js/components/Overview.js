@@ -8,45 +8,55 @@ import ActionsMenuColumn from './ActionsMenuColumn';
 class Overview extends React.Component {
 	render () {
 
-		var rows = store.stats.map((st) => {
-			return 	<tr>
-						<td>{st.name}</td>
-						<td>{st['total-jobs']}</td>
+		var rows = [];
 
-						<td>{st['current-jobs-ready']}</td>
-						<td>{st['current-jobs-reserved']}</td>
-						<td>{st['current-jobs-buried']}</td>
+		for(let k of Object.keys(store.stats)) {
+			let st = store.stats[k];
 
-						<td>{st['current-using']}</td>
-						<td>{st['current-waiting']}</td>
-						<td>{st['current-watching']}</td>
+			rows.push(
+				<tr>
+					<td>{st.name}</td>
+					<td>{st['total-jobs']}</td>
 
-						<ActionsMenuColumn queue={st.name} />
-					</tr>;
-		});
+					<td>{st['current-jobs-ready']}</td>
+					<td>{st['current-jobs-reserved']}</td>
+					<td>{st['current-jobs-buried']}</td>
+
+					<td>{st['current-using']}</td>
+					<td>{st['current-waiting']}</td>
+					<td>{st['current-watching']}</td>
+
+					<ActionsMenuColumn queue={st.name} />
+				</tr>
+			);
+		};
 
 		return (
-			<table className="pure-table pure-table-bordered" width="100%">
-				<thead>
-					<tr>
-						<td>name</td>
-						<td>total</td>
+			<div>
+				<h1>All Queues</h1>
 
-						<td>ready</td>
-						<td>reserved</td>
-						<td>buried</td>
+				<table className="pure-table pure-table-bordered" width="100%">
+					<thead>
+						<tr>
+							<td>name</td>
+							<td>total</td>
 
-						<td>using</td>
-						<td>waiting</td>
-						<td>watching</td>
+							<td>ready</td>
+							<td>reserved</td>
+							<td>buried</td>
 
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-					{rows}
-				</tbody>
-			</table>
+							<td>using</td>
+							<td>waiting</td>
+							<td>watching</td>
+
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{rows}
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 };

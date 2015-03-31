@@ -41,6 +41,46 @@ class Queue {
         });
     }
 
+    peek (id) {
+        return new Promise((resolve, reject) => {
+            this.client.peek(id).onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
+    peek_buried () {
+        return new Promise((resolve, reject) => {
+            this.client.peek_buried().onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
+    peek_delayed () {
+        return new Promise((resolve, reject) => {
+            this.client.peek_delayed().onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
+    peek_ready () {
+        return new Promise((resolve, reject) => {
+            this.client.peek_ready().onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
     watch (tube) {
         return new Promise((resolve, reject) => {
             this.client.watch(tube).onSuccess((data) => {
@@ -48,6 +88,14 @@ class Queue {
             }, (data) => {
                 reject(data)
             });
+        });
+    }
+
+    watchOnly (tube) {
+        return this.watch(tube).then(() => {
+            if(tube !== 'default') {
+                return this.ignore('default');
+            }
         });
     }
 
