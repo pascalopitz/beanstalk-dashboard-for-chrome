@@ -61,6 +61,7 @@ class Overview extends React.Component {
 					<thead>
 						<tr>
 							<td>name</td>
+							<td>urgent</td>
 							<td>ready</td>
 							<td>reserved</td>
 							<td>buried</td>
@@ -70,6 +71,7 @@ class Overview extends React.Component {
 					<tbody>
 						<tr>
 							<td>{st.name}</td>
+							<td>{st['current-jobs-urgent']}</td>
 							<td>{st['current-jobs-ready']}</td>
 							<td>{st['current-jobs-reserved']}</td>
 							<td>{st['current-jobs-buried']}</td>

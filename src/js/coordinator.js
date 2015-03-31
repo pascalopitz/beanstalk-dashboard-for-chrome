@@ -55,11 +55,12 @@ class Coordinator {
 
 		store.loading = true;
 		store.peek = {};
+		store.job_stats = {};
 		events.emit('rerender');
 
 		let client = new Queue(store.settings);
 
-		client.watchOnly(queue).then(() => {
+		client.use(queue).then(() => {
 			var all = [];
 
 			all.push(client.peek_ready());
@@ -73,8 +74,25 @@ class Coordinator {
 				store.peek.buried = data[1];
 				store.peek.delayed = data[2];
 
-				store.loading = false;
+				return data;
+			}).then((data) => {
 
+				let all = [];
+
+				for(let d of data) {
+					if(typeof d === 'object' && d.id) {
+						all.push(client.stats_job(d.id));
+					}
+				}
+
+				return Promise.all(all);
+			}).then((data) => {
+
+				for(let d of data) {
+					store.job_stats[d.id] = d;
+				}
+	
+				store.loading = false;
 				events.emit('rerender');
 			});
 		});

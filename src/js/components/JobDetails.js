@@ -1,6 +1,7 @@
 import React from 'react/addons'; 
 
 import events from '../events';
+import store from '../store';
 
 class JobDetails extends React.Component {
 	_noop () {
@@ -18,6 +19,8 @@ class JobDetails extends React.Component {
 	render () {
 
 		let actions = [];
+
+		let job_stats = JSON.stringify(store.job_stats[this.props.job.id], true, 2);
 
 		switch(this.props.name) {
 			case 'buried':
@@ -41,7 +44,7 @@ class JobDetails extends React.Component {
 		}
 
 		return (
-			<div>
+			<div className="custom-job-details">
 				<h2>Next job {this.props.name}</h2>
 
 				<form className="pure-form pure-form-aligned" onSubmit={this._noop}>
@@ -61,6 +64,11 @@ class JobDetails extends React.Component {
 						</div>
 					</fieldset>
 				</form>
+
+				<div className="custom-job-stats">
+					<h3>Stats</h3>
+					<pre>{job_stats}</pre>
+ 				</div>
 			</div>
 		);
 	}

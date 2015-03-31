@@ -31,6 +31,16 @@ class Queue {
         });
     }
 
+    stats_job (job) {
+        return new Promise((resolve, reject) => {
+            this.client.stats_job(job).onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
     ignore (tube) {
         return new Promise((resolve, reject) => {
             this.client.ignore(tube).onSuccess((data) => {
