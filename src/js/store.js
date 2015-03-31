@@ -5,7 +5,8 @@ let store = {
 	job_stats: {},
 	settings: {
 		connection: "localhost",
-		port: 11300
+		port: 11300,
+		pause_delay: 3600
 	}
 };
 

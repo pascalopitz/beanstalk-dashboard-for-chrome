@@ -15,31 +15,63 @@ class Overview extends React.Component {
 		events.emit('queue-empty', this.props.name);
 	}
 
-	_kickTen () {
-		events.emit('queue-kick-ten', this.props.name);
+	_pauseQueue () {
+		events.emit('queue-pause', this.props.name);
 	}
+
+	_resumeQueue () {
+		events.emit('queue-resume', this.props.name);
+	}
+
+	// _kickTen () {
+	// 	events.emit('queue-kick-ten', this.props.name);
+	// }
 
 	render () {
 
 		let st = store.stats[this.props.name];
 
 		if(!st) {
-			window.setTimeout(() => {
-				window.location.hash = '/';
-			}, 5000);
-
 			return (
 				<div>
 					<h1>{this.props.name} not found</h1>
 
 					<p>
-						Redirecting to homepage ...
+						<a href="#/">Back to homepage ...</a>
 					</p>
 				</div>
 			);
 		}
 
+
+
+		let pause_resume;
+		let kickTen;
 		let ready, buried, delayed;
+
+		if(st.pause) {
+			pause_resume = (
+				<a onClick={this._resumeQueue.bind(this)} className="pure-button">
+					<i className="fa fa-play"></i>
+					<span>Resume</span>
+				</a>
+			);
+		} else {
+			pause_resume = (
+				<a onClick={this._pauseQueue.bind(this)} className="pure-button">
+					<i className="fa fa-pause"></i>
+					<span>Pause</span>
+				</a>
+			);
+		}
+
+		// kickTen = (
+		// 	<a onClick={this._kickTen.bind(this)} className="pure-button">
+		// 		<i className="fa fa-bolt"></i>
+		// 		<span>Kick 10</span>
+		// 	</a>
+		// );
+
 
 		if(store.peek.ready && store.peek.ready.id) {
 			ready = <JobDetails name="ready" job={store.peek.ready} />
@@ -86,10 +118,8 @@ class Overview extends React.Component {
 						<span>Empty</span>
 					</a>
 
-					<a onClick={this._kickTen.bind(this)} className="pure-button">
-						<i className="fa fa-bolt"></i>
-						<span>Kick 10</span>
-					</a>
+					{pause_resume}
+					{kickTen}
 				</div>
 
 				{ready}

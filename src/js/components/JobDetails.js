@@ -13,7 +13,7 @@ class JobDetails extends React.Component {
 	}
 
 	_bury () {
-		events.emit('job-bury', this.props.job.id);
+		events.emit('job-bury', store.job_stats[this.props.job.id].tube, this.props.job.id);
 	}
 
 	render () {
@@ -22,6 +22,7 @@ class JobDetails extends React.Component {
 
 		let job_stats = JSON.stringify(store.job_stats[this.props.job.id], true, 2);
 
+		/*
 		switch(this.props.name) {
 			case 'buried':
 			case 'delayed':
@@ -42,6 +43,7 @@ class JobDetails extends React.Component {
 				);
 				break;
 		}
+		*/
 
 		return (
 			<div className="custom-job-details">

@@ -26,14 +26,47 @@ class ActionsMenuColumn extends React.Component {
 		this._toggleMenu();
 	}
 
+	_pauseQueue () {
+		events.emit('queue-pause', this.props.queue);
+		this._toggleMenu();
+	}
+
+	_resumeQueue () {
+		events.emit('queue-resume', this.props.queue);
+		this._toggleMenu();
+	}
+
 	render () {
 
 		let menu;
+		let pause_resume;
+
+		if(this.props.stats.pause) {
+			pause_resume = (
+				<a onClick={this._resumeQueue.bind(this)} className="pure-menu-link">
+					<i className="fa fa-play"></i>
+					<span>Resume</span>
+				</a>
+			);
+		} else {
+			pause_resume = (
+				<a onClick={this._pauseQueue.bind(this)} className="pure-menu-link">
+					<i className="fa fa-pause"></i>
+					<span>Pause</span>
+				</a>
+			);
+		}
 
 		if(this.state.open) {
 			menu = (
 				<div className="pure-menu custom-actions-menu">
 					<ul className="pure-menu-list">
+						<li className="pure-menu-item">
+							<a onClick={this._gotoQueue.bind(this)} className="pure-menu-link">
+								<i className="fa fa-search"></i>
+								<span>Details</span>
+							</a>
+						</li>
 						<li className="pure-menu-item">
 							<a onClick={this._emptyQueue.bind(this)} className="pure-menu-link">
 								<i className="fa fa-trash-o"></i>
@@ -41,10 +74,7 @@ class ActionsMenuColumn extends React.Component {
 							</a>
 						</li>
 						<li className="pure-menu-item">
-							<a onClick={this._gotoQueue.bind(this)} className="pure-menu-link">
-								<i className="fa fa-search"></i>
-								<span>Details</span>
-							</a>
+							{pause_resume}
 						</li>
 					</ul>
 				</div>

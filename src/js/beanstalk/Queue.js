@@ -21,6 +21,16 @@ class Queue {
         });
     }
 
+    pause_tube (tube, delay) {
+        return new Promise((resolve, reject) => {
+            this.client.pause_tube(tube, delay).onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
     stats_tube (tube) {
         return new Promise((resolve, reject) => {
             this.client.stats_tube(tube).onSuccess((data) => {

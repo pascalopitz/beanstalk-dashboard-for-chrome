@@ -10,20 +10,24 @@ class Coordinator {
 
 	init () {
 		this.query();
-		this.resumeQueue();
+		this.resumeQueuePolling();
 
 		events.on('queue-empty', this.emptyQueue.bind(this));
+		events.on('queue-pause', this.pauseQueue.bind(this));
+		events.on('queue-resume', this.resumeQueue.bind(this));
 		events.on('queue-details', this.getQueueDetails.bind(this));
 
-		events.on('update-settings-start', this.pauseQueue.bind(this));
-		events.on('update-settings-finish', this.resumeQueue.bind(this));
+		events.on('job-bury', this.buryJob.bind(this));
+
+		events.on('update-settings-start', this.pauseQueuePolling.bind(this));
+		events.on('update-settings-finish', this.resumeQueuePolling.bind(this));
 	}
 
-	resumeQueue () {
+	resumeQueuePolling () {
 		this.queryInterval = window.setInterval(this.query.bind(this), INTERVAL);
 	}
 
-	pauseQueue () {
+	pauseQueuePolling () {
 		if(this.queryInterval) {
 			window.clearInterval(this.queryInterval);
 		}
@@ -98,6 +102,51 @@ class Coordinator {
 		});
 	}
 
+
+	_pauseQueue (queue, delay) {
+
+		store.loading = true;
+		events.emit('rerender');
+
+		let client = new Queue(store.settings);
+
+		client.use(queue)
+			.then(() => {
+				return client.pause_tube(queue, delay);
+			})
+			.then(() => {
+				store.loading = false;
+				client.disconnect();
+				events.emit('rerender');
+			});
+	}
+
+	resumeQueue (queue) {
+		this._pauseQueue(queue, 0);
+	}
+
+
+	pauseQueue (queue) {
+		this._pauseQueue(queue, store.settings.pause_delay);
+	}
+
+	buryJob (queue, jobId) {
+		store.loading = true;
+		events.emit('rerender');
+
+		let client = new Queue(store.settings);
+
+		client.watchOnly(queue).then(() => {
+			return client.bury(jobId);
+		}).then(() => {
+			console.log('success', arguments);
+
+			client.disconnect();
+			this.getQueueDetails();
+		}, () => {
+			console.log('err', arguments);
+		});
+	}
 
 	emptyQueue (queue) {
 

@@ -15,14 +15,14 @@ class Overview extends React.Component {
 
 			rows.push(
 				<tr>
-					<td>{st.name}</td>
+					<td><a href={ "#/queue/" + st.name}>{st.name}</a></td>
 					<td>{st['current-jobs-urgent']}</td>
 					<td>{st['current-jobs-ready']}</td>
 					<td>{st['current-jobs-reserved']}</td>
 					<td>{st['current-jobs-buried']}</td>
 					<td>{st['total-jobs']}</td>
 
-					<ActionsMenuColumn queue={st.name} />
+					<ActionsMenuColumn queue={st.name} stats={st} />
 				</tr>
 			);
 		};
