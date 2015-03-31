@@ -15,6 +15,7 @@
     "compile-js": "npm run-script minify-ui && npm run-script minify-bg",
     "compile-css": "npm run-script css",
     "cleanup": "rm -Rf ./css && rm -Rf ./js && mkdir js && mkdir css",
+    "package": "echo $1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

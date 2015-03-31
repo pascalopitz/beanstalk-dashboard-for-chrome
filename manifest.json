@@ -1,6 +1,6 @@
 {
-  "name": "beanstalk-dashboard-for-chrome",
-  "description": "beanstalk-dashboard-for-chrome",
+  "name": "Beanstalkd Dashboard",
+  "description": "A beanstalkd dashboard",
   "version": "0.1",
   "manifest_version": 2,
   "app": {
