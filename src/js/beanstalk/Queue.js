@@ -92,11 +92,15 @@ class Queue {
     }
 
     watchOnly (tube) {
-        return this.watch(tube).then(() => {
-            if(tube !== 'default') {
-                return this.ignore('default');
-            }
-        });
+        let p = this.watch(tube);
+
+        if(tube !== 'default') {
+            p.then(() => {
+                return this.ignore('default')
+            });
+        }
+    
+        return p;
     }
 
     reserve () {

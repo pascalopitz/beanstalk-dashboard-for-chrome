@@ -66,14 +66,17 @@ class Coordinator {
 			all.push(client.peek_buried());
 			all.push(client.peek_delayed());
 
-
 			Promise.all(all).then((data) => {
 				client.disconnect();
-				console.log(data);
+
+				store.peek.ready = data[0];
+				store.peek.buried = data[1];
+				store.peek.delayed = data[2];
+
 				store.loading = false;
+
 				events.emit('rerender');
 			});
-
 		});
 	}
 

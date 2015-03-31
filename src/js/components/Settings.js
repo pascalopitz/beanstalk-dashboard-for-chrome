@@ -21,6 +21,7 @@ class Settings extends React.Component {
 		}
 
 		events.emit('update-settings-finish');
+		return false;
 	}
 
 	_noop () {

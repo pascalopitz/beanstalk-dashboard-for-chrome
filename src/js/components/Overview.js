@@ -16,15 +16,10 @@ class Overview extends React.Component {
 			rows.push(
 				<tr>
 					<td>{st.name}</td>
-					<td>{st['total-jobs']}</td>
-
 					<td>{st['current-jobs-ready']}</td>
 					<td>{st['current-jobs-reserved']}</td>
 					<td>{st['current-jobs-buried']}</td>
-
-					<td>{st['current-using']}</td>
-					<td>{st['current-waiting']}</td>
-					<td>{st['current-watching']}</td>
+					<td>{st['total-jobs']}</td>
 
 					<ActionsMenuColumn queue={st.name} />
 				</tr>
@@ -39,15 +34,10 @@ class Overview extends React.Component {
 					<thead>
 						<tr>
 							<td>name</td>
-							<td>total</td>
-
 							<td>ready</td>
 							<td>reserved</td>
 							<td>buried</td>
-
-							<td>using</td>
-							<td>waiting</td>
-							<td>watching</td>
+							<td>total</td>
 
 							<td></td>
 						</tr>
