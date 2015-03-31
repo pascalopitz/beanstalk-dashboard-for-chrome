@@ -2,6 +2,8 @@
 
 A Chrome packaged app that aims to provide a GUI dashboard for [beanstalkd](https://kr.github.io/beanstalkd/)
 
+![Screenshot](https://raw.githubusercontent.com/pascalopitz/beanstalk-dashboard-for-chrome/master/img/screenshot.png)
+
 ##Features
 
 * [x] Show all tubes
