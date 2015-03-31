@@ -27,6 +27,14 @@ class Overview extends React.Component {
 			);
 		};
 
+		if(store.connectionError) {
+			return (
+				<div>
+					<h1>Connection Error</h1>
+				</div>
+			);
+		}
+
 		return (
 			<div>
 				<h1>All Queues</h1>

@@ -9,8 +9,8 @@ const INTERVAL = 1000;
 class Coordinator {
 
 	init () {
-		this.query();
-		this.resumeQueuePolling();
+		events.on('connection-error', this.connectionError.bind(this));
+		events.on('connection-success', this.connectionSuccess.bind(this));
 
 		events.on('queue-empty', this.emptyQueue.bind(this));
 		events.on('queue-pause', this.pauseQueue.bind(this));
@@ -21,6 +21,27 @@ class Coordinator {
 
 		events.on('update-settings-start', this.pauseQueuePolling.bind(this));
 		events.on('update-settings-finish', this.resumeQueuePolling.bind(this));
+
+		this.query();
+		this.resumeQueuePolling();
+	}
+
+	connectionError () {
+		if(store.connectionError) {
+			return;
+		}
+
+		store.connectionError = true;
+		events.emit('rerender');
+	}
+
+	connectionSuccess () {
+		if(!store.connectionError) {
+			return;
+		}
+
+		store.connectionError = false;
+		events.emit('rerender');
 	}
 
 	resumeQueuePolling () {

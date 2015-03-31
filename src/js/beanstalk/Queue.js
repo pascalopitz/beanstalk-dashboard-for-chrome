@@ -1,5 +1,7 @@
 import nodestalker from 'nodestalker';
 
+import events from '../events';
+
 class Queue {
 
     constructor (connection) {
@@ -9,6 +11,14 @@ class Queue {
         }
 
         this.client = nodestalker.Client(connection);
+
+        this.client.on('error', (err) => {
+            events.emit('connection-error');
+        });
+
+        this.client.on('connect', (address) => {
+            events.emit('connection-success');
+        });
     }
 
     list_tubes () {

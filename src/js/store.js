@@ -1,4 +1,5 @@
 let store = {
+	connectionError: false,
 	loading: false,
 	stats: {},
 	peek: {},
