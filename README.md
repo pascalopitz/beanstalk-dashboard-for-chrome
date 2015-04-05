@@ -10,11 +10,11 @@ A Chrome packaged app that aims to provide a GUI dashboard for [beanstalkd](http
 * [x] Show tube details
 * [x] Empty tube
 * [x] Pause tube
-* [ ] Batch kick jobs
+* [x] Batch kick jobs
 * [x] Peek ready, buried, delayed
-* [ ] Kick job
-* [ ] Delete job
-* [ ] Bury job
+* [x] Kick job
+* [x] Delete job
+* [ ] Bury job (might not be a good idea, can only be the first ready one, and that might change rapidly)
 
 ##Install and Run
 
@@ -30,7 +30,7 @@ Second, build the compiled files into the js folder:
 
 Third, add the app in the extensions tab of chrome, via "Load unpacked extension". Select the project folder.
 You will need to check the developer mode check box in order to be able to do that.
-Now you should be able to run the app, and inspect console messages coming through via the window inspector.
+Now you should be able to run the app.
 
 For development, you can run the watch task, which will re-compile on change:
 
