@@ -15,7 +15,7 @@
     "compile-js": "npm run-script minify-ui && npm run-script minify-bg",
     "compile-css": "npm run-script css",
     "cleanup": "rm -Rf ./css && rm -Rf ./js && mkdir js && mkdir css",
-    "package": "npm run-script compile && rm ./package.zip && zip -r ./package.zip js/ css/ img/ manifest.json window.html",
+    "package": "rm ./package.zip & npm run-script compile && zip -r ./package.zip js/ css/ img/ manifest.json window.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
