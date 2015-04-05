@@ -36,10 +36,20 @@ class ActionsMenuColumn extends React.Component {
 		this._toggleMenu();
 	}
 
+	_kickOne () {
+		events.emit('queue-kick-one', this.props.queue);
+		this._toggleMenu();
+	}
+
+	_kickTen () {
+		events.emit('queue-kick-ten', this.props.queue);
+		this._toggleMenu();
+	}
+
 	render () {
 
 		let menu;
-		let pause_resume;
+		let pause_resume, kickOne, kickTen;
 
 		if(this.props.stats.pause) {
 			pause_resume = (
@@ -57,6 +67,20 @@ class ActionsMenuColumn extends React.Component {
 			);
 		}
 
+		kickOne = (
+			<a onClick={this._kickOne.bind(this)} className="pure-menu-link">
+				<i className="fa fa-forward"></i>
+				<span>Kick 1</span>
+			</a>
+		);
+
+		kickTen = (
+			<a onClick={this._kickTen.bind(this)} className="pure-menu-link">
+				<i className="fa fa-fast-forward"></i>
+				<span>Kick 10</span>
+			</a>
+		);
+
 		if(this.state.open) {
 			menu = (
 				<div className="pure-menu custom-actions-menu">
@@ -69,12 +93,18 @@ class ActionsMenuColumn extends React.Component {
 						</li>
 						<li className="pure-menu-item">
 							<a onClick={this._emptyQueue.bind(this)} className="pure-menu-link">
-								<i className="fa fa-trash-o"></i>
-								<span>Empty</span>
+								<i className="fa fa-trash"></i>
+								<span>Delete all ready</span>
 							</a>
 						</li>
 						<li className="pure-menu-item">
 							{pause_resume}
+						</li>
+						<li className="pure-menu-item">
+							{kickOne}
+						</li>
+						<li className="pure-menu-item">
+							{kickTen}
 						</li>
 					</ul>
 				</div>

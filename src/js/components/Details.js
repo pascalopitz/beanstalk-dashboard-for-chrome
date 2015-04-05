@@ -11,10 +11,6 @@ class Overview extends React.Component {
 		events.emit('queue-details', this.props.name);
 	}
 
-	_emptyQueue () {
-		events.emit('queue-empty', this.props.name);
-	}
-
 	_pauseQueue () {
 		events.emit('queue-pause', this.props.name);
 	}
@@ -23,9 +19,13 @@ class Overview extends React.Component {
 		events.emit('queue-resume', this.props.name);
 	}
 
-	// _kickTen () {
-	// 	events.emit('queue-kick-ten', this.props.name);
-	// }
+	_kickOne () {
+		events.emit('queue-kick-one', this.props.name);
+	}
+
+	_kickTen () {
+		events.emit('queue-kick-ten', this.props.name);
+	}
 
 	render () {
 
@@ -43,10 +43,7 @@ class Overview extends React.Component {
 			);
 		}
 
-
-
-		let pause_resume;
-		let kickTen;
+		let pause_resume, kickTen, kickOne;
 		let ready, buried, delayed;
 
 		if(st.pause) {
@@ -65,12 +62,19 @@ class Overview extends React.Component {
 			);
 		}
 
-		// kickTen = (
-		// 	<a onClick={this._kickTen.bind(this)} className="pure-button">
-		// 		<i className="fa fa-bolt"></i>
-		// 		<span>Kick 10</span>
-		// 	</a>
-		// );
+		kickOne = (
+			<a onClick={this._kickOne.bind(this)} className="pure-button">
+				<i className="fa fa-forward"></i>
+				<span>Kick 1</span>
+			</a>
+		);
+
+		kickTen = (
+			<a onClick={this._kickTen.bind(this)} className="pure-button">
+				<i className="fa fa-fast-forward"></i>
+				<span>Kick 10</span>
+			</a>
+		);
 
 
 		if(store.peek.ready && store.peek.ready.id) {
@@ -113,12 +117,8 @@ class Overview extends React.Component {
 				</table>
 
 				<div className="custom-button-row">
-					<a onClick={this._emptyQueue.bind(this)} className="pure-button">
-						<i className="fa fa-trash-o"></i>
-						<span>Empty</span>
-					</a>
-
 					{pause_resume}
+					{kickOne}
 					{kickTen}
 				</div>
 

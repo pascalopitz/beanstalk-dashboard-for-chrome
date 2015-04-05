@@ -71,6 +71,16 @@ class Queue {
         });
     }
 
+    kick (tube, count) {
+        return new Promise((resolve, reject) => {
+            this.client.kick(tube, count).onSuccess((data) => {
+                resolve(data)
+            }, (data) => {
+                reject(data)
+            });
+        });
+    }
+
     peek (id) {
         return new Promise((resolve, reject) => {
             this.client.peek(id).onSuccess((data) => {
