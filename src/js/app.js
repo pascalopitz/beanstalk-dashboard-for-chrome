@@ -41,6 +41,10 @@ events.on('rerender', () => {
 	render();
 });
 
-coordinator.init();
+chrome.storage.local.get(Object.keys(store.settings), (settings) => {
+	console.log(settings);
+	store.settings = Object.assign(store.settings, settings);
+	coordinator.init();
+	render();
+});
 
-render();

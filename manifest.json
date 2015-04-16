@@ -1,7 +1,7 @@
 {
   "name": "Beanstalkd Dashboard",
   "description": "A beanstalkd dashboard",
-  "version": "0.3",
+  "version": "0.4",
   "manifest_version": 2,
   "app": {
     "background": {
@@ -11,7 +11,8 @@
     }
   },
   "permissions": [
-    "system.network"
+    "system.network",
+    "storage"
   ],  
   "sockets": {
       "tcp": {

@@ -12,14 +12,7 @@ class Settings extends React.Component {
 
 	_save () {
 		events.emit('update-settings-start');
-
-
-		let keys = Object.keys(this.state);
-
-		for (let k of keys) {
-			store.settings[k] = this.state[k];
-		}
-
+		events.emit('update-settings-save', this.state);
 		events.emit('update-settings-finish');
 		return false;
 	}

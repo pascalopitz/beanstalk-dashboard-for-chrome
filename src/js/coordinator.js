@@ -23,7 +23,7 @@ class Coordinator {
 		events.on('job-delete-all', this.emptyQueue.bind(this));
 
 		events.on('update-settings-start', this.pauseQueuePolling.bind(this));
-		events.on('update-settings-finish', this.resumeQueuePolling.bind(this));
+		events.on('update-settings-save', this.saveSettings.bind(this));
 
 		this.query();
 		this.resumeQueuePolling();
@@ -55,6 +55,24 @@ class Coordinator {
 		if(this.queryInterval) {
 			window.clearInterval(this.queryInterval);
 		}
+	}
+
+	saveSettings (settings) {
+
+		store.loading = true;
+		events.emit('rerender');
+
+		let keys = Object.keys(settings);
+
+		for (let k of keys) {
+			store.settings[k] = settings[k];
+		}
+
+		chrome.storage.local.set(settings, () => {
+			this.resumeQueuePolling();
+			store.loading = false;
+			events.emit('rerender');
+		});
 	}
 
 	/*Queue Actions */
