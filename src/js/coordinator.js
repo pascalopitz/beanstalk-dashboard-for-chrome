@@ -70,8 +70,11 @@ class Coordinator {
 
 		chrome.storage.local.set(settings, () => {
 			this.resumeQueuePolling();
-			store.loading = false;
-			events.emit('rerender');
+
+			window.setTimeout(() => {
+				store.loading = false;
+				events.emit('rerender');
+			}, 1000);
 		});
 	}
 
