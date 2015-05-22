@@ -5,7 +5,7 @@ let store = {
 	peek: {},
 	job_stats: {},
 	settings: {
-		connection: "localhost",
+		address: "localhost",
 		port: 11300,
 		pause_delay: 3600
 	}
