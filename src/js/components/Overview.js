@@ -29,8 +29,8 @@ class Overview extends React.Component {
 
 		if(store.connectionError) {
 			return (
-				<div>
-					<h1>Connection Error</h1>
+				<div className="pure-alert pure-alert-error">
+					<label>Connection Error</label>
 				</div>
 			);
 		}

@@ -1,6 +1,7 @@
 let store = {
 	connectionError: false,
 	loading: false,
+	messages: [],
 	stats: {},
 	peek: {},
 	job_stats: {},

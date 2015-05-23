@@ -1,6 +1,8 @@
 
 import store from './store';
 import events from './events';
+import messages from './messages';
+import loader from './loader';
 
 import Queue from './beanstalk/Queue';
 
@@ -59,8 +61,7 @@ class Coordinator {
 
 	saveSettings (settings) {
 
-		store.loading = true;
-		events.emit('rerender');
+		loader.show();
 
 		let keys = Object.keys(settings);
 
@@ -71,10 +72,8 @@ class Coordinator {
 		chrome.storage.local.set(settings, () => {
 			this.resumeQueuePolling();
 
-			window.setTimeout(() => {
-				store.loading = false;
-				events.emit('rerender');
-			}, 1000);
+			messages.success('Saved settings.');
+			loader.hide();
 		});
 	}
 
@@ -104,10 +103,10 @@ class Coordinator {
 
 	getQueueDetails (queue) {
 
-		store.loading = true;
 		store.peek = {};
 		store.job_stats = {};
-		events.emit('rerender');
+
+		loader.show();
 
 		let client = new Queue(store.settings);
 
@@ -153,8 +152,7 @@ class Coordinator {
 					store.job_stats[d.id] = d;
 				}
 	
-				store.loading = false;
-				events.emit('rerender');
+				loader.hide();
 			});
 		});
 	}
@@ -162,41 +160,44 @@ class Coordinator {
 
 	_pauseQueue (queue, delay) {
 
-		store.loading = true;
-		events.emit('rerender');
+		loader.show();
 
 		let client = new Queue(store.settings);
 
-		client.use(queue)
+		return client.use(queue)
 			.then(() => {
 				return client.pause_tube(queue, delay);
 			})
 			.then(() => {
-				store.loading = false;
 				client.disconnect();
-				events.emit('rerender');
+				loader.hide();
+				return true;
 			});
 	}
 
 	resumeQueue (queue) {
-		this._pauseQueue(queue, 0);
+		this._pauseQueue(queue, 0).then(() => {
+			messages.success('Queue resumed.');
+		});
 	}
 
 
 	pauseQueue (queue) {
-		this._pauseQueue(queue, store.settings.pause_delay);
+		this._pauseQueue(queue, store.settings.pause_delay).then(() => {
+			messages.success('Queue paused.');
+		});
 	}
 
 	emptyQueue (queue, status) {
 
-		store.loading = true;
-		events.emit('rerender');
+		loader.show();
 
 		let client = new Queue(store.settings);
 
 		let finish = () => {
 			client.disconnect();
-			this.getQueueDetails(queue)
+			this.getQueueDetails(queue);
+			messages.success(`Removed all ${status} jobs from queue.`);
 		};
 
 		client.use(queue).then(() => {
@@ -219,6 +220,7 @@ class Coordinator {
 					case 'ready':
 					default:
 						promise = client.peek_ready();
+						status = 'ready';
 						break;
 				}
 
@@ -240,8 +242,8 @@ class Coordinator {
 
 
 	_kick (queue, num) {
-		store.loading = true;
-		events.emit('rerender');
+
+		loader.show();
 
 		let client = new Queue(store.settings);
 
@@ -252,6 +254,7 @@ class Coordinator {
 			.then(() => {
 				client.disconnect();
 				this.getQueueDetails(queue)
+				messages.success(`Kicked ${num} jobs.`);
 			});
 	}
 
@@ -269,8 +272,7 @@ class Coordinator {
 
 		callback = callback || () => {};
 
-		store.loading = true;
-		events.emit('rerender');
+		loader.show();
 
 		let client = new Queue(store.settings);
 
@@ -284,12 +286,12 @@ class Coordinator {
 
 	deleteJob (queue, jobId) {
 
-		store.loading = true;
-		events.emit('rerender');
+		loader.show();
 
 		this._deleteJob(jobId, () => {
 			this.getQueueDetails(queue)
-		})
+			messages.success(`Deleted job ${jobId}.`);
+		});
 	}
 }
 

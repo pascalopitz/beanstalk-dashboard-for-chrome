@@ -14,6 +14,8 @@ import Overview from './components/Overview';
 import Details from './components/Details'; 
 
 
+let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 let routes = {
     '/'              : Overview,
     '/queue/:name'   : Details,
@@ -21,15 +23,31 @@ let routes = {
 }
 
 function render() {
-	let loader;
+	let loader, messages = [], messageContainer, loaderContainer;
+
+	store.messages.forEach((m, idx) => {
+		messages.push(<div className={m.css} key={m.id}>{m.text}</div>);
+	});
+
+	messageContainer =	<div className="custom-message-container">
+							<ReactCSSTransitionGroup transitionName="message" transitionAppear={true}>
+								{messages}
+							</ReactCSSTransitionGroup>
+						</div>;
 
 	if(store.loading) {
 		loader = <div id="custom-loader"><i className="fa fa-spinner fa-spin"></i></div>
 	}
 
+	loaderContainer = 	<ReactCSSTransitionGroup transitionName="message" transitionAppear={true}>
+							{loader}
+						</ReactCSSTransitionGroup>
+
+
 	React.render(
 		<div>
-			{loader}
+			{loaderContainer}
+			{messageContainer}
 			<Navigation routes={routes} store={store} />
 			<Router routes={routes} store={store} />
 		</div>,

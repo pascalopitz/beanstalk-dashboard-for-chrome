@@ -29,13 +29,14 @@
   "devDependencies": {
     "babel": "^4.4.5",
     "babelify": "^5.0.3",
-    "react": "0.13.0-rc1",
-    "nodestalker": "^0.1.17",
     "browserify": "^9.0.3",
-    "watch": "^0.13.0",
-    "purecss": "~0.6.0",
-    "less": "~2.4.0",
     "font-awesome": "~4.3.0",
-    "tiny-react-router": "~1.0.0"
+    "less": "~2.4.0",
+    "nodestalker": "^0.1.17",
+    "pure-extras": "^1.0.0",
+    "purecss": "~0.6.0",
+    "react": "^0.13.3",
+    "tiny-react-router": "~1.0.0",
+    "watch": "^0.13.0"
   }
 }
