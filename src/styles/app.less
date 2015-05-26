@@ -16,7 +16,7 @@
 	overflow-y: auto;
 }
 
-#root a {
+#root a:not(.pure-button) {
 	color: #000000;
 }
 
@@ -94,13 +94,21 @@
 	width: 30%;
 }
 
-.custom-job-stats pre,
-.custom-job-data pre {
-	height: 300px;
-	padding: 10px;
+.custom-job-stats table {
+	box-sizing: border-box;
+	height: 400px;
+	width: 100%;
+	margin-bottom: 50px;
 }
 
-.custom-job-stats pre {
+.custom-job-data pre {
+	box-sizing: border-box;
+	height: 400px;
+	padding: 10px;
+	margin-bottom: 50px;
+}
+
+.custom-job-stats table {
 	background: #fefefe;
 }
 

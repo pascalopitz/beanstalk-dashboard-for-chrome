@@ -20,6 +20,7 @@ class Coordinator {
 		events.on('queue-pause', this.pauseQueue.bind(this));
 		events.on('queue-resume', this.resumeQueue.bind(this));
 		events.on('queue-details', this.getQueueDetails.bind(this));
+		events.on('queue-bury-one', this.buryOne.bind(this));
 
 		events.on('job-delete', this.deleteJob.bind(this));
 		events.on('job-delete-all', this.emptyQueue.bind(this));
@@ -95,18 +96,33 @@ class Coordinator {
 				for(let d of data) {
 					store.stats[d.name] = d;
 				}
+
 				events.emit('rerender');
+				this.getCurrentQueueDetails();
 			});
 		});
 	}
 
 
 	getQueueDetails (queue) {
+		store.peek = {};
+		store.job_stats = {};
+		store.currentQueue = queue;
+
+		this.getCurrentQueueDetails();
+		events.emit('rerender');
+	}
+
+	getCurrentQueueDetails() {
+
+		let queue = store.currentQueue;
+
+		if(!queue) {
+			return;
+		}
 
 		store.peek = {};
 		store.job_stats = {};
-
-		loader.show();
 
 		let client = new Queue(store.settings);
 
@@ -147,12 +163,11 @@ class Coordinator {
 
 				return Promise.all(all);
 			}).then((data) => {
-
 				for(let d of data) {
 					store.job_stats[d.id] = d;
 				}
-	
-				loader.hide();
+
+				events.emit('rerender');
 			});
 		});
 	}
@@ -196,8 +211,9 @@ class Coordinator {
 
 		let finish = () => {
 			client.disconnect();
-			this.getQueueDetails(queue);
+			this.getCurrentQueueDetails();
 			messages.success(`Removed all ${status} jobs from queue.`);
+			loader.hide();
 		};
 
 		client.use(queue).then(() => {
@@ -253,8 +269,10 @@ class Coordinator {
 			})
 			.then(() => {
 				client.disconnect();
-				this.getQueueDetails(queue)
+				this.getCurrentQueueDetails()
 				messages.success(`Kicked ${num} jobs.`);
+
+				loader.hide();
 			});
 	}
 
@@ -264,6 +282,27 @@ class Coordinator {
 
 	kickOne (queue) {
 		this._kick(queue, 1);
+	}
+
+	buryOne (queue) {
+		loader.show();
+
+		let client = new Queue(store.settings);
+
+		client.watch(queue)
+			.then(() => {
+				return client.reserve();
+			})
+			.then((job) => {
+				return client.bury(job.id);
+			})
+			.then(() => {
+				client.disconnect();
+				this.getCurrentQueueDetails()
+				loader.hide();
+				messages.success(`Buried job.`);
+			});
+
 	}
 
 	/* Job Actions */
@@ -289,8 +328,9 @@ class Coordinator {
 		loader.show();
 
 		this._deleteJob(jobId, () => {
-			this.getQueueDetails(queue)
+			this.getCurrentQueueDetails()
 			messages.success(`Deleted job ${jobId}.`);
+			loader.hide();
 		});
 	}
 }

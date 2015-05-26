@@ -19,14 +19,6 @@ class Overview extends React.Component {
 		events.emit('queue-resume', this.props.name);
 	}
 
-	_kickOne () {
-		events.emit('queue-kick-one', this.props.name);
-	}
-
-	_kickTen () {
-		events.emit('queue-kick-ten', this.props.name);
-	}
-
 	render () {
 
 		let st = store.stats[this.props.name];
@@ -43,38 +35,24 @@ class Overview extends React.Component {
 			);
 		}
 
-		let pause_resume, kickTen, kickOne;
+		let pause_resume;
 		let ready, buried, delayed;
 
 		if(st.pause) {
 			pause_resume = (
-				<a onClick={this._resumeQueue.bind(this)} className="pure-button">
+				<a onClick={this._resumeQueue.bind(this)} className="pure-button pure-button-success">
 					<i className="fa fa-play"></i>
 					<span>Resume</span>
 				</a>
 			);
 		} else {
 			pause_resume = (
-				<a onClick={this._pauseQueue.bind(this)} className="pure-button">
+				<a onClick={this._pauseQueue.bind(this)} className="pure-button pure-button-warning">
 					<i className="fa fa-pause"></i>
 					<span>Pause</span>
 				</a>
 			);
 		}
-
-		kickOne = (
-			<a onClick={this._kickOne.bind(this)} className="pure-button">
-				<i className="fa fa-forward"></i>
-				<span>Kick 1</span>
-			</a>
-		);
-
-		kickTen = (
-			<a onClick={this._kickTen.bind(this)} className="pure-button">
-				<i className="fa fa-fast-forward"></i>
-				<span>Kick 10</span>
-			</a>
-		);
 
 
 		if(store.peek.ready && store.peek.ready.id) {
@@ -118,8 +96,6 @@ class Overview extends React.Component {
 
 				<div className="custom-button-row">
 					{pause_resume}
-					{kickOne}
-					{kickTen}
 				</div>
 
 				{ready}

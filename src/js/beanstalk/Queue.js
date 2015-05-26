@@ -169,9 +169,9 @@ class Queue {
         });
     }
 
-    bury (id) {
+    bury (id, priority) {
         return new Promise((resolve, reject) => {
-            this.client.bury(id).onSuccess((job) => {
+            this.client.bury(id, priority).onSuccess((job) => {
                 resolve();
             });
         });
