@@ -46,10 +46,15 @@ class ActionsMenuColumn extends React.Component {
 		this._toggleMenu();
 	}
 
+	_showPutForm () {
+		events.emit('putform-show', this.props.queue);		
+		this._toggleMenu();
+	}
+
 	render () {
 
 		let menu;
-		let pause_resume, kickOne, kickTen;
+		let pause_resume, kickOne, kickTen, showPutForm;
 
 		if(this.props.stats.pause) {
 			pause_resume = (
@@ -81,6 +86,13 @@ class ActionsMenuColumn extends React.Component {
 			</a>
 		);
 
+		showPutForm = (
+			<a onClick={this._showPutForm.bind(this)} className="pure-menu-link">
+				<i className="fa fa-plus"></i>
+				<span>Add Job</span>
+			</a>
+		);
+
 		if(this.state.open) {
 			menu = (
 				<div className="pure-menu custom-actions-menu">
@@ -99,6 +111,9 @@ class ActionsMenuColumn extends React.Component {
 						</li>
 						<li className="pure-menu-item">
 							{pause_resume}
+						</li>
+						<li className="pure-menu-item">
+							{showPutForm}
 						</li>
 						<li className="pure-menu-item">
 							{kickOne}

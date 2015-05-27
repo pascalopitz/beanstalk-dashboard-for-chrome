@@ -13,6 +13,7 @@ import Settings from './components/Settings';
 import Overview from './components/Overview'; 
 import Details from './components/Details'; 
 
+import PutForm from './components/PutForm'; 
 
 let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -23,14 +24,15 @@ let routes = {
 }
 
 function render() {
-	let loader, messages = [], messageContainer, loaderContainer;
+	let loader, putForm, messages = [], 
+		messageContainer, loaderContainer, putFormContainer;
 
 	store.messages.forEach((m, idx) => {
 		messages.push(<div className={m.css} key={m.id}>{m.text}</div>);
 	});
 
 	messageContainer =	<div className="custom-message-container">
-							<ReactCSSTransitionGroup transitionName="message" transitionAppear={true}>
+							<ReactCSSTransitionGroup transitionName="fade" transitionAppear={true}>
 								{messages}
 							</ReactCSSTransitionGroup>
 						</div>;
@@ -39,13 +41,23 @@ function render() {
 		loader = <div id="custom-loader"><i className="fa fa-spinner fa-spin"></i></div>
 	}
 
-	loaderContainer = 	<ReactCSSTransitionGroup transitionName="message" transitionAppear={true}>
+	loaderContainer = 	<ReactCSSTransitionGroup transitionName="fade" transitionAppear={true}>
 							{loader}
+						</ReactCSSTransitionGroup>
+
+
+	if(store.showPutForm) {
+		putForm = <PutForm />;
+	}
+
+	putFormContainer = 	<ReactCSSTransitionGroup transitionName="fade" transitionAppear={true}>
+							{putForm}
 						</ReactCSSTransitionGroup>
 
 
 	React.render(
 		<div>
+			{putFormContainer}
 			{loaderContainer}
 			{messageContainer}
 			<Navigation routes={routes} store={store} />

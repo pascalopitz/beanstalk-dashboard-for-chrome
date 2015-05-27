@@ -116,22 +116,38 @@
 	background: #eeeeee;
 }
 
+.custom-put-form {
+	background: rgba(0, 0, 0, .2);
+	z-index: 300;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	min-width: 100%;
+}
+
+.custom-put-form > div {
+	margin-left: auto;
+	margin-right: auto;
+	top: 20px;	
+}
 
 
-.message-enter {
+.fade-enter {
   opacity: 0.01;
   transition: opacity .2s ease-in;
 }
 
-.message-enter.message-enter-active {
+.fade-enter.fade-enter-active {
   opacity: 1;
 }
 
-.message-leave {
+.fade-leave {
   opacity: 1;
   transition: opacity .2s ease-in;
 }
 
-.message-leave.message-leave-active {
+.fade-leave.fade-leave-active {
   opacity: 0.01;
 }

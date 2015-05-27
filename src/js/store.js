@@ -1,6 +1,8 @@
 let store = {
 	connectionError: false,
 	loading: false,
+	showPutForm: false,
+	putForm: {},
 	messages: [],
 	stats: {},
 	peek: {},

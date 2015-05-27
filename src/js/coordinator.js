@@ -22,11 +22,15 @@ class Coordinator {
 		events.on('queue-details', this.getQueueDetails.bind(this));
 		events.on('queue-bury-one', this.buryOne.bind(this));
 
+		events.on('job-put', this.putJob.bind(this));
 		events.on('job-delete', this.deleteJob.bind(this));
 		events.on('job-delete-all', this.emptyQueue.bind(this));
 
 		events.on('update-settings-start', this.pauseQueuePolling.bind(this));
 		events.on('update-settings-save', this.saveSettings.bind(this));
+
+		events.on('putform-show', this.showPutForm.bind(this));
+		events.on('putform-hide', this.hidePutForm.bind(this));
 
 		this.query();
 		this.resumeQueuePolling();
@@ -76,6 +80,18 @@ class Coordinator {
 			messages.success('Saved settings.');
 			loader.hide();
 		});
+	}
+
+	showPutForm (queue) {
+		store.showPutForm = true;
+		store.putForm.queue = queue;
+		events.emit('rerender');		
+	}
+
+	hidePutForm (queue) {
+		store.showPutForm = false;
+		store.putForm = {};
+		events.emit('rerender');		
 	}
 
 	/*Queue Actions */
@@ -306,6 +322,31 @@ class Coordinator {
 	}
 
 	/* Job Actions */
+
+	_putJob (queue, data, priority, delay, ttr) {
+
+		loader.show();
+
+		let client = new Queue(store.settings);
+
+		client.use(queue)
+			.then(() => {
+				return client.put(data, priority, delay, ttr);
+			})
+			.then(() => {
+				client.disconnect();
+				this.getCurrentQueueDetails()
+				messages.success(`Put jobs into ${queue}.`);
+				loader.hide();
+			});
+	}
+
+	putJob(obj) {
+		store.showPutForm = false;
+		let { queue, data, priority, delay, ttr } = obj;
+		this._putJob(queue, data, priority, delay, ttr);
+	}
+
 
 	_deleteJob (jobId, callback) {
 

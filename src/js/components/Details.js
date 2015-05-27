@@ -19,6 +19,10 @@ class Overview extends React.Component {
 		events.emit('queue-resume', this.props.name);
 	}
 
+	_showPutForm () {
+		events.emit('putform-show', this.props.name);
+	}
+
 	render () {
 
 		let st = store.stats[this.props.name];
@@ -53,6 +57,13 @@ class Overview extends React.Component {
 				</a>
 			);
 		}
+
+		let showPutForm = (
+			<a onClick={this._showPutForm.bind(this)} className="pure-button">
+				<i className="fa fa-plus"></i>
+				<span>Add Job</span>
+			</a>
+		);
 
 
 		if(store.peek.ready && store.peek.ready.id) {
@@ -96,6 +107,7 @@ class Overview extends React.Component {
 
 				<div className="custom-button-row">
 					{pause_resume}
+					{showPutForm}
 				</div>
 
 				{ready}
