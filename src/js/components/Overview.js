@@ -6,6 +6,11 @@ import events from '../events';
 import ActionsMenuColumn from './ActionsMenuColumn';
 
 class Overview extends React.Component {
+
+	_showPutForm () {
+		events.emit('putform-show', null);
+	}
+
 	render () {
 
 		var rows = [];
@@ -35,6 +40,13 @@ class Overview extends React.Component {
 			);
 		}
 
+		let showPutForm = (
+			<a onClick={this._showPutForm.bind(this)} className="pure-button">
+				<i className="fa fa-plus"></i>
+				<span>Add Job</span>
+			</a>
+		);
+
 		return (
 			<div>
 				<h1>All Queues</h1>
@@ -56,6 +68,10 @@ class Overview extends React.Component {
 						{rows}
 					</tbody>
 				</table>
+			
+				<div className="custom-button-row">
+					{showPutForm}
+				</div>
 			</div>
 		);
 	}
