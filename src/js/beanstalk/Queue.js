@@ -21,7 +21,7 @@ class Queue {
         });
     }
 
-    list_tubes () {
+    list_tubes () :Promise {
         return new Promise((resolve, reject) => {
             this.client.list_tubes().onSuccess((data) => {
                 resolve(data)
@@ -31,7 +31,7 @@ class Queue {
         });
     }
 
-    pause_tube (tube, delay) {
+    pause_tube (tube: string, delay: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.pause_tube(tube, delay).onSuccess((data) => {
                 resolve(data)
@@ -41,7 +41,7 @@ class Queue {
         });
     }
 
-    stats_tube (tube) {
+    stats_tube (tube: string) :Promise {
         return new Promise((resolve, reject) => {
             this.client.stats_tube(tube).onSuccess((data) => {
                 resolve(data)
@@ -51,7 +51,7 @@ class Queue {
         });
     }
 
-    stats_job (job) {
+    stats_job (job: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.stats_job(job).onSuccess((data) => {
                 resolve(data)
@@ -61,7 +61,7 @@ class Queue {
         });
     }
 
-    ignore (tube) {
+    ignore (tube: string) :Promise {
         return new Promise((resolve, reject) => {
             this.client.ignore(tube).onSuccess((data) => {
                 resolve(data)
@@ -71,7 +71,7 @@ class Queue {
         });
     }
 
-    kick (tube, count) {
+    kick (tube: string, count: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.kick(tube, count).onSuccess((data) => {
                 resolve(data)
@@ -81,7 +81,7 @@ class Queue {
         });
     }
 
-    peek (id) {
+    peek (id: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.peek(id).onSuccess((data) => {
                 resolve(data)
@@ -91,7 +91,7 @@ class Queue {
         });
     }
 
-    peek_buried () {
+    peek_buried () :Promise {
         return new Promise((resolve, reject) => {
             this.client.peek_buried().onSuccess((data) => {
                 resolve(data)
@@ -101,7 +101,7 @@ class Queue {
         });
     }
 
-    peek_delayed () {
+    peek_delayed () :Promise {
         return new Promise((resolve, reject) => {
             this.client.peek_delayed().onSuccess((data) => {
                 resolve(data)
@@ -111,7 +111,7 @@ class Queue {
         });
     }
 
-    peek_ready () {
+    peek_ready () :Promise {
         return new Promise((resolve, reject) => {
             this.client.peek_ready().onSuccess((data) => {
                 resolve(data)
@@ -121,7 +121,7 @@ class Queue {
         });
     }
 
-    watch (tube) {
+    watch (tube: string) :Promise {
         return new Promise((resolve, reject) => {
             this.client.watch(tube).onSuccess((data) => {
                 resolve(data)
@@ -131,7 +131,7 @@ class Queue {
         });
     }
 
-    watchOnly (tube) {
+    watchOnly (tube: string) :Promise {
         let p = this.watch(tube);
 
         if(tube !== 'default') {
@@ -143,7 +143,7 @@ class Queue {
         return p;
     }
 
-    reserve () {
+    reserve () :Promise {
         return new Promise((resolve, reject) => {
             this.client.reserve().onSuccess((job) => {
                 resolve(job);
@@ -151,7 +151,7 @@ class Queue {
         });
     }
 
-    release (id, priority, delay) {
+    release (id: number, priority: number, delay: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.release(id, priority, delay).onSuccess((job) => {
                 resolve(job);
@@ -159,7 +159,7 @@ class Queue {
         });
     }
 
-    deleteJob (id) {
+    deleteJob (id: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.deleteJob(id).onEnd((data) => {
                 resolve()
@@ -169,7 +169,7 @@ class Queue {
         });
     }
 
-    bury (id, priority) {
+    bury (id: number, priority: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.bury(id, priority).onSuccess((job) => {
                 resolve();
@@ -177,7 +177,7 @@ class Queue {
         });
     }
 
-    use (tube) {
+    use (tube: string) :Promise {
         return new Promise((resolve, reject) => {
             this.client.use(tube).onEnd((data) => {
                 resolve()
@@ -187,7 +187,7 @@ class Queue {
         });
     }
 
-    put (data, priority, delay, ttr) {
+    put (data: string, priority: number, delay: number, ttr: number) :Promise {
         return new Promise((resolve, reject) => {
             this.client.put(data, priority, delay, ttr).onEnd((data) => {
                 resolve()
@@ -197,7 +197,7 @@ class Queue {
         });
     }
 
-    disconnect () {
+    disconnect () :Promise {
         return new Promise((resolve, reject) => {
             this.client.disconnect();
             resolve();

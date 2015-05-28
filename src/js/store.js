@@ -1,4 +1,18 @@
-let store = {
+let store: {
+	connectionError: boolean;
+	loading: boolean;
+	showPutForm: boolean;
+	putForm: Object;
+	messages: Array;
+	stats: Object;
+	peek: Object;
+	job_stats: Object;
+	settings: {
+		address: string;
+		port: mixed;
+		pause_delay: mixed;
+	};
+} = {
 	connectionError: false,
 	loading: false,
 	showPutForm: false,

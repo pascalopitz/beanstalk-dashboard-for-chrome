@@ -64,7 +64,7 @@ class Coordinator {
 		}
 	}
 
-	saveSettings (settings) {
+	saveSettings (settings: Object) {
 
 		loader.show();
 
@@ -82,13 +82,13 @@ class Coordinator {
 		});
 	}
 
-	showPutForm (queue) {
+	showPutForm (queue: string) {
 		store.showPutForm = true;
 		store.putForm.queue = queue;
 		events.emit('rerender');		
 	}
 
-	hidePutForm (queue) {
+	hidePutForm (queue: string) {
 		store.showPutForm = false;
 		store.putForm = {};
 		events.emit('rerender');		
@@ -120,7 +120,7 @@ class Coordinator {
 	}
 
 
-	getQueueDetails (queue) {
+	getQueueDetails (queue: string) {
 		store.peek = {};
 		store.job_stats = {};
 		store.currentQueue = queue;
@@ -131,7 +131,7 @@ class Coordinator {
 
 	getCurrentQueueDetails() {
 
-		let queue = store.currentQueue;
+		let queue: string = store.currentQueue;
 
 		if(!queue) {
 			return;
@@ -189,7 +189,7 @@ class Coordinator {
 	}
 
 
-	_pauseQueue (queue, delay) {
+	_pauseQueue (queue: string, delay: number) {
 
 		loader.show();
 
@@ -206,20 +206,20 @@ class Coordinator {
 			});
 	}
 
-	resumeQueue (queue) {
+	resumeQueue (queue: string) {
 		this._pauseQueue(queue, 0).then(() => {
 			messages.success('Queue resumed.');
 		});
 	}
 
 
-	pauseQueue (queue) {
+	pauseQueue (queue: string) {
 		this._pauseQueue(queue, store.settings.pause_delay).then(() => {
 			messages.success('Queue paused.');
 		});
 	}
 
-	emptyQueue (queue, status) {
+	emptyQueue (queue: string, status: string) {
 
 		loader.show();
 
@@ -273,7 +273,7 @@ class Coordinator {
 	}
 
 
-	_kick (queue, num) {
+	_kick (queue: string, num: number) {
 
 		loader.show();
 
@@ -292,15 +292,15 @@ class Coordinator {
 			});
 	}
 
-	kickTen (queue) {
+	kickTen (queue: string) {
 		this._kick(queue, 10);
 	}
 
-	kickOne (queue) {
+	kickOne (queue: string) {
 		this._kick(queue, 1);
 	}
 
-	buryOne (queue) {
+	buryOne (queue: string) {
 		loader.show();
 
 		let client = new Queue(store.settings);
@@ -323,7 +323,7 @@ class Coordinator {
 
 	/* Job Actions */
 
-	_putJob (queue, data, priority, delay, ttr) {
+	_putJob (queue: string, data: string, priority: number, delay: number, ttr: number) {
 
 		loader.show();
 
@@ -341,14 +341,14 @@ class Coordinator {
 			});
 	}
 
-	putJob(obj) {
+	putJob(obj: Object) {
 		store.showPutForm = false;
 		let { queue, data, priority, delay, ttr } = obj;
 		this._putJob(queue, data, priority, delay, ttr);
 	}
 
 
-	_deleteJob (jobId, callback) {
+	_deleteJob (jobId: number, callback: Function) {
 
 		callback = callback || () => {};
 
@@ -364,7 +364,7 @@ class Coordinator {
 		})
 	}
 
-	deleteJob (queue, jobId) {
+	deleteJob (queue: string, jobId: number) {
 
 		loader.show();
 
