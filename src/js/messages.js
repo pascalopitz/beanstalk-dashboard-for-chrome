@@ -3,7 +3,7 @@ import events from './events';
 
 let nextId = 0;
 
-function add(type, text) {
+function add(type: string, text: string) {
 
 	let msg = {
 		type: type,
@@ -28,19 +28,19 @@ function add(type, text) {
 }
 
 class MessageHelper {
-	info(text) {
+	info(text: string) {
 		add('info', text);
 	}
 
-	success(text) {
+	success(text: string) {
 		add('success', text);
 	}
 
-	error(text) {
+	error(text: string) {
 		add('error', text);		
 	}
 
-	warning(text) {
+	warning(text: string) {
 		add('warning', text);
 	}
 }

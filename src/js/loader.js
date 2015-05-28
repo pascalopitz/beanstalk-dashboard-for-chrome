@@ -2,12 +2,12 @@ import store from './store';
 import events from './events';
 
 class LoaderHelper {
-	show(text) {
+	show(text: string) {
 		store.loading = true;
 		events.emit('rerender');
 	}
 
-	hide(text) {				
+	hide(text: string) {				
 		store.loading = false;
 		events.emit('rerender');
 	}

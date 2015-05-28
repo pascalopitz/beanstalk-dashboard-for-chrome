@@ -3,7 +3,7 @@ let store: {
 	loading: boolean;
 	showPutForm: boolean;
 	putForm: Object;
-	messages: Array;
+	messages: Array<Object>;
 	stats: Object;
 	peek: Object;
 	job_stats: Object;
